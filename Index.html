@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM AUTOMOTIVE - ศูนย์รวมอะไหล่และโซลูชันงานซ่อมครบวงจร</title>
+    
+    <!-- Google Fonts: Kanit (Thai) & Roboto (Eng) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for Icons (เปลี่ยนไอคอนได้ที่นี่: https://fontawesome.com/v5/search) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom Config for Brand Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#f69531', // สีส้มแบรนด์ (แก้รหัสสีตรงนี้ได้ถ้าต้องการเปลี่ยนเฉด)
+                            dark: '#111111',   // สีดำ
+                            gray: '#F3F4F6',   // สีพื้นหลังเทาอ่อน
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                        body: ['Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        
+        .hero-pattern {
+            background-color: #111111;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23222222' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- 1. TOP BAR (แถบสีดำบนสุด) -->
+    <div class="bg-brand-dark text-gray-300 text-sm py-2">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="hidden md:flex space-x-6">
+                <!-- [EDIT] แก้ไขเบอร์โทรและอีเมลตรงนี้ -->
+                <span><i class="fas fa-phone-alt mr-2 text-brand-orange"></i>02-123-4567</span>
+                <span><i class="fab fa-line mr-2 text-brand-orange"></i>@domauto</span>
+                <span><i class="fas fa-envelope mr-2 text-brand-orange"></i>contact@domauto.com</span>
+            </div>
+            <div class="flex space-x-4 ml-auto">
+                <a href="#" class="hover:text-white transition">แจ้งชำระเงิน</a>
+                <span class="text-gray-600">|</span>
+                <a href="#" class="hover:text-white transition">ติดตามสถานะ</a>
+                <span class="text-gray-600">|</span>
+                <a href="#" class="hover:text-white transition">สมัครสมาชิก</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MAIN HEADER (ส่วนหัวเว็บ) -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                
+                <!-- [EDIT] Logo Area: เปลี่ยนรูปโลโก้ตรง src -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <img src="https://img5.pic.in.th/file/secure-sv1/Black-01-1.png" alt="DOM AUTOMOTIVE" class="h-16 w-auto object-contain">
+                </a>
+
+                <!-- Search Bar -->
+                <div class="w-full md:w-1/2 relative">
+                    <div class="flex">
+                        <select class="hidden md:block bg-gray-100 text-gray-700 text-sm border-r border-gray-300 px-3 py-2 rounded-l-md focus:outline-none">
+                            <option>ทุกหมวดหมู่</option>
+                            <option>เครื่องยนต์</option>
+                            <option>ช่วงล่าง</option>
+                            <option>เบรก</option>
+                        </select>
+                        <input type="text" placeholder="ค้นหาอะไหล่, รุ่นรถ, หรือรหัสสินค้า..." class="w-full bg-gray-100 text-gray-800 px-4 py-3 md:rounded-l-none rounded-l-md focus:outline-none focus:ring-2 focus:ring-brand-orange border border-transparent focus:border-transparent transition-all">
+                        <button class="bg-brand-orange text-white px-6 py-3 rounded-r-md hover:bg-orange-600 transition font-medium">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Icons (Cart & Account) -->
+                <div class="flex items-center space-x-6">
+                    <a href="#" class="relative text-gray-600 hover:text-brand-orange transition">
+                        <i class="fas fa-shopping-cart text-2xl"></i>
+                        <span class="absolute -top-2 -right-2 bg-brand-dark text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">3</span>
+                        <div class="text-xs mt-1 hidden md:block text-center">ตะกร้า</div>
+                    </a>
+                    <a href="#" class="text-gray-600 hover:text-brand-orange transition text-center">
+                        <i class="fas fa-user-circle text-2xl"></i>
+                        <div class="text-xs mt-1 hidden md:block">บัญชี</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Menu -->
+        <nav class="border-t border-gray-100 hidden md:block">
+            <div class="container mx-auto px-4">
+                <ul class="flex space-x-8 text-sm font-medium text-gray-600 py-3">
+                    <li><a href="#" class="text-brand-orange border-b-2 border-brand-orange pb-3">หน้าแรก</a></li>
+                    <li><a href="#" class="hover:text-brand-orange transition">สินค้าทั้งหมด</a></li>
+                    <li><a href="#" class="hover:text-brand-orange transition">แบรนด์อะไหล่</a></li>
+                    <li><a href="#" class="hover:text-brand-orange transition">โปรโมชั่น</a></li>
+                    <li><a href="#" class="hover:text-brand-orange transition">บทความช่าง</a></li>
+                    <li><a href="#" class="hover:text-brand-orange transition">ติดต่อเรา</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 3. HERO BANNER (แบนเนอร์หลัก) -->
+    <section class="hero-pattern text-white py-16 md:py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10"></div>
+        <!-- Decorative Circle -->
+        <div class="absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-brand-orange opacity-20 rounded-full blur-3xl"></div>
+        
+        <div class="container mx-auto px-4 relative z-20 flex items-center">
+            <div class="w-full md:w-2/3 lg:w-1/2">
+                <!-- [EDIT] สโลแกนเล็ก -->
+                <span class="bg-brand-orange text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">The Virtual Pit Crew</span>
+                <!-- [EDIT] พาดหัวใหญ่ -->
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                    ครบเครื่องเรื่องอะไหล่ <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-orange-300">จัดส่งไว มั่นใจตรงรุ่น</span>
+                </h1>
+                <!-- [EDIT] คำบรรยายรอง -->
+                <p class="text-gray-400 text-lg mb-8 max-w-lg font-light">
+                    แหล่งรวมอะไหล่รถยนต์คุณภาพสูง คัดสรรเฉพาะแบรนด์ชั้นนำ สำหรับช่างมืออาชีพและคนรักรถ พร้อมทีมผู้เชี่ยวชาญให้คำปรึกษาฟรี
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#" class="bg-brand-orange text-white px-8 py-3 rounded font-bold hover:bg-orange-600 transition text-center shadow-lg shadow-orange-500/30">
+                        เลือกซื้อสินค้า
+                    </a>
+                    <a href="#" class="border border-white text-white px-8 py-3 rounded font-bold hover:bg-white hover:text-black transition text-center">
+                        ปรึกษาผู้เชี่ยวชาญ
+                    </a>
+                </div>
+            </div>
+            
+            <!-- [EDIT] Hero Image (รูปด้านขวา) -->
+            <div class="hidden lg:block w-1/2 relative h-full flex justify-center items-center">
+                <!-- <img src="your-hero-image.png" alt="Auto Parts" class="object-contain max-h-[400px] w-auto drop-shadow-2xl animate-fade-in-up"> -->
+                
+                <!-- Default Placeholder (ไอคอนเฟืองจางๆ) -->
+                 <div class="relative text-9xl text-white opacity-10 transform rotate-12">
+                    <i class="fas fa-cogs"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. CATEGORIES (หมวดหมู่สินค้า) -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-brand-dark mb-2">หมวดหมู่สินค้า</h2>
+                <p class="text-gray-500">เลือกดูสินค้าตามประเภทการใช้งาน</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                <!-- [EDIT] Category Item 1 -->
+                <a href="#" class="group border border-gray-200 rounded-lg p-6 text-center hover:border-brand-orange hover:shadow-lg transition bg-white">
+                    <div class="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4 text-gray-600 group-hover:bg-brand-orange group-hover:text-white transition">
+                        <!-- เปลี่ยนไอคอนได้ที่ class="fas fa-..." -->
+                        <i class="fas fa-oil-can text-2xl"></i>
+                    </div>
+                    <!-- เปลี่ยนชื่อหมวดหมู่ -->
+                    <h3 class="font-medium text-gray-700 group-hover:text-brand-orange transition">น้ำมันเครื่อง & ของเหลว</h3>
+                </a>
+                
+                <!-- [EDIT] Category Item 2 -->
+                <a href="#" class="group border border-gray-200 rounded-lg p-6 text-center hover:border-brand-orange hover:shadow-lg transition bg-white">
+                    <div class="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4 text-gray-600 group-hover:bg-brand-orange group-hover:text-white transition">
+                        <i class="fas fa-car-battery text-2xl"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-700 group-hover:text-brand-orange transition">แบตเตอรี่ & ระบบไฟ</h3>
+                </a>
+
+                <!-- เพิ่มหมวดหมู่อื่นๆ ตาม Pattern นี้... -->
+                <a href="#" class="group border border-gray-200 rounded-lg p-6 text-center hover:border-brand-orange hover:shadow-lg transition bg-white">
+                    <div class="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4 text-gray-600 group-hover:bg-brand-orange group-hover:text-white transition">
+                        <i class="fas fa-compact-disc text-2xl"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-700 group-hover:text-brand-orange transition">ระบบเบรก</h3>
+                </a>
+
+                <a href="#" class="group border border-gray-200 rounded-lg p-6 text-center hover:border-brand-orange hover:shadow-lg transition bg-white">
+                    <div class="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4 text-gray-600 group-hover:bg-brand-orange group-hover:text-white transition">
+                        <i class="fas fa-snowflake text-2xl"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-700 group-hover:text-brand-orange transition">ระบบแอร์ & กรอง</h3>
+                </a>
+
+                <a href="#" class="group border border-gray-200 rounded-lg p-6 text-center hover:border-brand-orange hover:shadow-lg transition bg-white">
+                    <div class="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4 text-gray-600 group-hover:bg-brand-orange group-hover:text-white transition">
+                        <i class="fas fa-cogs text-2xl"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-700 group-hover:text-brand-orange transition">ช่วงล่าง & บังคับเลี้ยว</h3>
+                </a>
+
+                <a href="#" class="group border border-gray-200 rounded-lg p-6 text-center hover:border-brand-orange hover:shadow-lg transition bg-white">
+                    <div class="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4 text-gray-600 group-hover:bg-brand-orange group-hover:text-white transition">
+                        <i class="fas fa-tools text-2xl"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-700 group-hover:text-brand-orange transition">เครื่องมือช่าง</h3>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. FEATURED PRODUCTS (สินค้าแนะนำ) -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-brand-dark">สินค้าแนะนำ</h2>
+                    <p class="text-gray-500 mt-1">คัดสรรสินค้าคุณภาพ ราคาคุ้มค่า สำหรับคุณ</p>
+                </div>
+                <a href="#" class="text-brand-orange font-medium hover:text-orange-700 transition hidden sm:block">ดูทั้งหมด <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- [EDIT] Product Card 1 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition group duration-300">
+                    <!-- รูปสินค้า -->
+                    <div class="relative h-48 bg-gray-100 flex items-center justify-center p-4">
+                        <span class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">-15%</span>
+                        <!-- ถ้าจะใส่รูปสินค้าจริง ให้ใช้ <img src="..." class="h-full object-contain"> แทน icon ด้านล่าง -->
+                        <i class="fas fa-box text-6xl text-gray-300 group-hover:scale-110 transition duration-300"></i>
+                    </div>
+                    <!-- รายละเอียด -->
+                    <div class="p-4">
+                        <div class="text-xs text-gray-500 mb-1">โช๊คอัพ</div> <!-- หมวดหมู่ย่อย -->
+                        <h3 class="font-medium text-gray-800 mb-2 truncate group-hover:text-brand-orange transition">โช๊คอัพหน้า Toyota Revo (คู่)</h3> <!-- ชื่อสินค้า -->
+                        <div class="flex items-center justify-between mt-3">
+                            <div>
+                                <span class="block text-lg font-bold text-brand-orange">฿2,450</span> <!-- ราคาขาย -->
+                                <span class="text-xs text-gray-400 line-through">฿2,890</span> <!-- ราคาเต็ม -->
+                            </div>
+                            <button class="w-8 h-8 rounded-full bg-brand-dark text-white flex items-center justify-center hover:bg-brand-orange transition">
+                                <i class="fas fa-cart-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- [EDIT] Product Card 2 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition group duration-300">
+                    <div class="relative h-48 bg-gray-100 flex items-center justify-center p-4">
+                        <i class="fas fa-oil-can text-6xl text-gray-300 group-hover:scale-110 transition duration-300"></i>
+                    </div>
+                    <div class="p-4">
+                        <div class="text-xs text-gray-500 mb-1">น้ำมันเครื่อง</div>
+                        <h3 class="font-medium text-gray-800 mb-2 truncate group-hover:text-brand-orange transition">Shell Helix Ultra 5W-40 (4L)</h3>
+                        <div class="flex items-center justify-between mt-3">
+                            <div>
+                                <span class="block text-lg font-bold text-brand-orange">฿1,850</span>
+                            </div>
+                            <button class="w-8 h-8 rounded-full bg-brand-dark text-white flex items-center justify-center hover:bg-brand-orange transition">
+                                <i class="fas fa-cart-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- [EDIT] Product Card 3 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition group duration-300">
+                    <div class="relative h-48 bg-gray-100 flex items-center justify-center p-4">
+                        <span class="absolute top-2 left-2 bg-brand-orange text-white text-xs px-2 py-1 rounded">ขายดี</span>
+                        <i class="fas fa-compact-disc text-6xl text-gray-300 group-hover:scale-110 transition duration-300"></i>
+                    </div>
+                    <div class="p-4">
+                        <div class="text-xs text-gray-500 mb-1">ระบบเบรก</div>
+                        <h3 class="font-medium text-gray-800 mb-2 truncate group-hover:text-brand-orange transition">ผ้าเบรกหน้า Brembo Honda Civic FC</h3>
+                        <div class="flex items-center justify-between mt-3">
+                            <div>
+                                <span class="block text-lg font-bold text-brand-orange">฿1,290</span>
+                            </div>
+                            <button class="w-8 h-8 rounded-full bg-brand-dark text-white flex items-center justify-center hover:bg-brand-orange transition">
+                                <i class="fas fa-cart-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- [EDIT] Product Card 4 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition group duration-300">
+                    <div class="relative h-48 bg-gray-100 flex items-center justify-center p-4">
+                        <i class="fas fa-filter text-6xl text-gray-300 group-hover:scale-110 transition duration-300"></i>
+                    </div>
+                    <div class="p-4">
+                        <div class="text-xs text-gray-500 mb-1">กรองอากาศ</div>
+                        <h3 class="font-medium text-gray-800 mb-2 truncate group-hover:text-brand-orange transition">กรองอากาศ Isuzu D-Max 1.9</h3>
+                        <div class="flex items-center justify-between mt-3">
+                            <div>
+                                <span class="block text-lg font-bold text-brand-orange">฿450</span>
+                            </div>
+                            <button class="w-8 h-8 rounded-full bg-brand-dark text-white flex items-center justify-center hover:bg-brand-orange transition">
+                                <i class="fas fa-cart-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center sm:hidden">
+                <a href="#" class="inline-block border border-gray-300 text-gray-600 px-6 py-2 rounded-full font-medium hover:bg-brand-orange hover:text-white hover:border-brand-orange transition">ดูสินค้าทั้งหมด</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. TRUST BANNER (แถบสีส้ม - จุดเด่นบริการ) -->
+    <section class="bg-brand-orange py-8 mt-auto">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-white text-center md:text-left">
+                <!-- จุดเด่น 1 -->
+                <div class="flex flex-col md:flex-row items-center gap-4">
+                    <div class="bg-white/20 p-3 rounded-full">
+                        <i class="fas fa-shipping-fast text-2xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg">จัดส่งด่วนทั่วไทย</h4>
+                        <p class="text-orange-100 text-sm">ส่งสินค้าทุกวัน ถึงมือไวภายใน 1-3 วัน</p>
+                    </div>
+                </div>
+                <!-- จุดเด่น 2 -->
+                <div class="flex flex-col md:flex-row items-center gap-4">
+                    <div class="bg-white/20 p-3 rounded-full">
+                        <i class="fas fa-check-circle text-2xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg">ของแท้ ตรงรุ่น 100%</h4>
+                        <p class="text-orange-100 text-sm">รับประกันคุณภาพสินค้า คืนเงินหากไม่ตรงปก</p>
+                    </div>
+                </div>
+                <!-- จุดเด่น 3 -->
+                <div class="flex flex-col md:flex-row items-center gap-4">
+                    <div class="bg-white/20 p-3 rounded-full">
+                        <i class="fas fa-comments text-2xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg">ปรึกษาช่างผู้เชี่ยวชาญ</h4>
+                        <p class="text-orange-100 text-sm">ไม่แน่ใจเรื่องอะไหล่? ทักแชทถามเราได้เลย</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. FOOTER (ส่วนล่างสุด) -->
+    <footer class="bg-brand-dark text-gray-400 pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- About (เกี่ยวกับเรา) -->
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <!-- [EDIT] Logo Footer: เปลี่ยนรูปโลโก้ตรง src -->
+                        <div class="flex items-center gap-3">
+                            <!-- หากต้องการใช้รูปภาพโลโก้ตรงนี้ ก็ใส่ img src="..." แบบข้างบนได้เลย -->
+                             <div class="w-10 h-10 bg-brand-orange text-white flex items-center justify-center rounded transform skew-x-[-10deg]">
+                                <i class="fas fa-flag-checkered text-lg transform skew-x-[10deg]"></i>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-xl font-bold text-white leading-none">DOM</span>
+                                <span class="text-[0.6rem] font-medium text-brand-orange tracking-wider uppercase">The Virtual Pit Crew</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-sm mb-4 leading-relaxed">
+                        เราคือคู่คิดเรื่องอะไหล่ยนต์ พร้อมเคียงข้างทุกการซ่อมบำรุง ด้วยสินค้าคุณภาพและการบริการที่รวดเร็ว เชื่อถือได้
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-8 h-8 bg-gray-800 flex items-center justify-center rounded hover:bg-brand-orange hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-8 h-8 bg-gray-800 flex items-center justify-center rounded hover:bg-brand-orange hover:text-white transition"><i class="fab fa-line"></i></a>
+                        <a href="#" class="w-8 h-8 bg-gray-800 flex items-center justify-center rounded hover:bg-brand-orange hover:text-white transition"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <!-- Links (เมนูลัด) -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">เมนูลัด</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-brand-orange transition">หน้าแรก</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition">ค้นหาอะไหล่</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition">แจ้งชำระเงิน</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition">บทความสาระน่ารู้</a></li>
+                    </ul>
+                </div>
+
+                <!-- Customer Service (ช่วยเหลือลูกค้า) -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">ช่วยเหลือลูกค้า</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-brand-orange transition">วิธีการสั่งซื้อ</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition">การจัดส่งสินค้า</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition">นโยบายการคืนสินค้า</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition">คำถามที่พบบ่อย (FAQ)</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact (ติดต่อเรา) -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">ติดต่อเรา</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt mt-1 text-brand-orange"></i>
+                            <span>123 ถนนบางนา-ตราด แขวงบางนา เขตบางนา กรุงเทพฯ 10260</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-phone text-brand-orange"></i>
+                            <span>02-123-4567</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-envelope text-brand-orange"></i>
+                            <span>support@domauto.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs">
+                <p>&copy; 2025 DOM AUTOMOTIVE. All rights reserved.</p>
+                <div class="flex items-center gap-4 mt-4 md:mt-0">
+                    <i class="fab fa-cc-visa text-2xl text-gray-500"></i>
+                    <i class="fab fa-cc-mastercard text-2xl text-gray-500"></i>
+                    <i class="fas fa-university text-xl text-gray-500"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
